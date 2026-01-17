@@ -1,5 +1,3 @@
-# test with python3 test.py /Users/zimohuang/UofTHacks2026/video1.mov
-
 from twelvelabs import TwelveLabs
 import argparse
 import mimetypes
@@ -53,6 +51,7 @@ def resolve_video_id(client: TwelveLabs, index_id: str, filename: str) -> str:
             return item.id
     raise RuntimeError("Unable to resolve video_id after indexing.")
 
+
 def format_transcription(transcription) -> str:
     if not transcription:
         return ""
@@ -71,7 +70,8 @@ def format_transcription(transcription) -> str:
 
     return "\n".join(lines).strip()
 
-def summarize_local_video(video_path: str, index_id: str, prompt: str | None) -> tuple[str, str]:
+
+def analyze_local_video(video_path: str, index_id: str, prompt: str | None) -> tuple[str, str]:
     api_key = os.getenv("TL_API_KEY")
     if not api_key:
         raise RuntimeError("Missing TL_API_KEY environment variable.")
@@ -105,37 +105,56 @@ def summarize_local_video(video_path: str, index_id: str, prompt: str | None) ->
 
     video_id = resolve_video_id(client, index_id, filename)
 
-    summary = client.summarize(
+    analysis_prompt = prompt or (
+        "You are an interview analysis assistant. Analyze a recorded mock interview using the transcript "
+        "(and timestamps if provided). Focus only on observable communication signals based on the "
+        "candidate's words and structure.\n\n"
+        "Pay attention to:\n"
+        "- clarity and structure of answers\n"
+        "- specificity and concrete examples (metrics, outcomes, scope)\n"
+        "- ownership and agency language (\"I did\", decisions made)\n"
+        "- collaboration and stakeholder mentions\n"
+        "- reflection and tradeoffs\n"
+        "- filler, vague, or hedging language (\"kind of\", \"maybe\")\n\n"
+        "Cite evidence by quoting short phrases from the transcript and include timestamps when available. "
+        "Give constructive, actionable feedback.\n\n"
+        "Do NOT infer personality, emotions, confidence, or any protected or sensitive attributes. "
+        "Do NOT make assumptions beyond the words used.\n\n"
+        "Return a concise analysis with:\n"
+        "1) a brief overall summary\n"
+        "2) 3-5 strengths with evidence\n"
+        "3) 3-5 improvement suggestions with example rewrites"
+    )
+    analysis = client.analyze(
         video_id=video_id,
-        type="summary",
-        prompt=prompt,
+        prompt=analysis_prompt,
     )
 
-    # The SDK returns a response object with a `summary` field for type="summary".
-    return getattr(summary, "summary", str(summary)), transcript_text
+    # The SDK returns a response object with a `data` field for analyze.
+    return getattr(analysis, "data", str(analysis)), transcript_text
 
 
 def main() -> int:
     if load_dotenv is not None:
         load_dotenv()
 
-    parser = argparse.ArgumentParser(description="Summarize a local video with TwelveLabs.")
+    parser = argparse.ArgumentParser(description="Analyze a local video with TwelveLabs.")
     parser.add_argument("video_path", help="Path to the local video file.")
     parser.add_argument(
         "--index-id",
         default=os.getenv("TL_INDEX_ID"),
         help="TwelveLabs index ID (or set TL_INDEX_ID).",
     )
-    parser.add_argument("--prompt", default=None, help="Optional prompt to guide the summary.")
+    parser.add_argument("--prompt", default=None, help="Optional prompt to guide the analysis.")
     args = parser.parse_args()
 
     if not args.index_id:
         print("Missing index ID. Pass --index-id or set TL_INDEX_ID.", file=sys.stderr)
         return 1
 
-    summary_text, transcript_text = summarize_local_video(args.video_path, args.index_id, args.prompt)
-    print("Summary:")
-    print(summary_text)
+    analysis_text, transcript_text = analyze_local_video(args.video_path, args.index_id, args.prompt)
+    print("Analysis:")
+    print(analysis_text)
     print("\nTranscript:")
     if transcript_text:
         print(transcript_text)
