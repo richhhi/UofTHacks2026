@@ -74,6 +74,15 @@ export default function InterviewPage() {
       setError("Record a video first.");
       return;
     }
+    if (blob.size <= 0) {
+      setError("Recording is empty. Try recording again for at least a few seconds.");
+      return;
+    }
+    const duration = await getBlobDuration(blob);
+    if (!duration || Number.isNaN(duration) || duration < 4) {
+      setError("Recording must be at least 4 seconds. Try recording again.");
+      return;
+    }
     setError(null);
     setUploading(true);
     try {
@@ -96,6 +105,23 @@ export default function InterviewPage() {
     } finally {
       setUploading(false);
     }
+  }
+
+  function getBlobDuration(target: Blob): Promise<number | null> {
+    return new Promise((resolve) => {
+      const url = URL.createObjectURL(target);
+      const video = document.createElement("video");
+      video.preload = "metadata";
+      video.onloadedmetadata = () => {
+        URL.revokeObjectURL(url);
+        resolve(video.duration);
+      };
+      video.onerror = () => {
+        URL.revokeObjectURL(url);
+        resolve(null);
+      };
+      video.src = url;
+    });
   }
 
   if (loading) {
@@ -123,10 +149,7 @@ export default function InterviewPage() {
     <main className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">Mock interview</h1>
-            <Badge variant="secondary">{interview.status}</Badge>
-          </div>
+          <h1 className="text-2xl font-semibold tracking-tight">Mock interview</h1>
           <p className="text-sm text-slate-600">
             Answer the questions out loud while recording. When you stop, upload to get feedback.
           </p>
@@ -135,16 +158,12 @@ export default function InterviewPage() {
           <Link href="/interview/new">
             <Button variant="secondary">New</Button>
           </Link>
-          <Button variant="ghost" onClick={() => router.refresh()}>
-            Refresh
-          </Button>
         </div>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Questions</CardTitle>
-          <CardDescription>Curated behavioral prompts for this job context.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           {interview.questions?.length ? (
@@ -152,6 +171,7 @@ export default function InterviewPage() {
               {interview.questions
                 .slice()
                 .sort((a, b) => a.order - b.order)
+                .slice(0, 2)
                 .map((q) => (
                   <li key={q.id} className="rounded-lg border bg-slate-50 p-3">
                     <div className="flex items-center justify-between gap-3">
@@ -168,42 +188,18 @@ export default function InterviewPage() {
         </CardContent>
       </Card>
 
-      <MediaRecorderPanel onRecordingReady={setBlob} />
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Upload & feedback</CardTitle>
-          <CardDescription>
-            Videos upload directly to S3-compatible storage via presigned URL. Processing happens in Celery.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-sm text-slate-600">
-            {queued && interview.status !== "complete" && interview.status !== "failed" ? (
-              <span className="inline-flex items-center gap-2">
-                <Spinner className="h-4 w-4" /> Processing… (auto-refreshing)
-              </span>
-            ) : (
-              <span>Ready when you are.</span>
-            )}
-          </div>
-          <Button onClick={onUploadAndSubmit} disabled={uploading || !blob}>
-            {uploading ? (
-              <>
-                <Spinner className="h-4 w-4" /> Uploading…
-              </>
-            ) : (
-              "Upload & get feedback"
-            )}
-          </Button>
-        </CardContent>
-      </Card>
+      <MediaRecorderPanel
+        onRecordingReady={setBlob}
+        onSubmit={onUploadAndSubmit}
+        submitDisabled={uploading || !blob}
+        submitting={uploading}
+        submitLabel="Submit"
+      />
 
       {interview.status === "complete" ? (
         <Card>
           <CardHeader>
             <CardTitle>AI feedback</CardTitle>
-            <CardDescription>Stub output today; replace with OpenAI STAR analysis and per-answer scoring.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="rounded-lg border bg-slate-50 p-3">
@@ -229,7 +225,7 @@ export default function InterviewPage() {
               </div>
             </div>
             <div className="rounded-lg border bg-slate-50 p-3">
-              <p className="text-sm font-medium">Transcript (stub)</p>
+              <p className="text-sm font-medium">Transcript</p>
               <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">
                 {interview.transcript_text || "—"}
               </p>
@@ -254,4 +250,3 @@ export default function InterviewPage() {
     </main>
   );
 }
-

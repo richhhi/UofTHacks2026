@@ -9,6 +9,10 @@ import { Spinner } from "@/components/ui/spinner";
 type Props = {
   onRecordingReady: (blob: Blob) => void;
   maxDurationMs?: number;
+  onSubmit?: () => void;
+  submitLabel?: string;
+  submitDisabled?: boolean;
+  submitting?: boolean;
 };
 
 function formatMs(ms: number) {
@@ -36,7 +40,14 @@ function pickMimeType() {
   return "";
 }
 
-export function MediaRecorderPanel({ onRecordingReady, maxDurationMs = 60_000 }: Props) {
+export function MediaRecorderPanel({
+  onRecordingReady,
+  maxDurationMs = 60_000,
+  onSubmit,
+  submitLabel = "Submit recording",
+  submitDisabled = false,
+  submitting = false,
+}: Props) {
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const mediaStreamRef = React.useRef<MediaStream | null>(null);
   const recorderRef = React.useRef<MediaRecorder | null>(null);
@@ -175,11 +186,7 @@ export function MediaRecorderPanel({ onRecordingReady, maxDurationMs = 60_000 }:
         )}
 
         {permissionError ? <p className="text-sm text-red-600">{permissionError}</p> : null}
-        {mediaStreamRef.current ? (
-          <p className="text-xs text-slate-500">
-            {mimeType ? <>Recording format: <span className="font-medium">{mimeType}</span></> : "Recording format: browser default"}
-          </p>
-        ) : null}
+        {mediaStreamRef.current ? null : null}
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
@@ -206,8 +213,21 @@ export function MediaRecorderPanel({ onRecordingReady, maxDurationMs = 60_000 }:
             )}
           </div>
         </div>
+
+        {onSubmit ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <Button onClick={onSubmit} disabled={submitDisabled}>
+              {submitting ? (
+                <>
+                  <Spinner className="h-4 w-4" /> Uploading…
+                </>
+              ) : (
+                submitLabel
+              )}
+            </Button>
+          </div>
+        ) : null}
       </CardContent>
     </Card>
   );
 }
-

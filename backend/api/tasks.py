@@ -4,8 +4,8 @@ from celery import shared_task
 from django.db import transaction
 
 from api.models import Interview
-from api.services.ai import analyze_transcript_for_feedback, score_job_fit
-from api.services.transcription import transcribe_video
+from api.services.ai import score_job_fit
+from api.services.twelvelabs import analyze_video_from_storage
 
 
 @shared_task(bind=True, max_retries=2, default_retry_delay=10)
@@ -25,8 +25,12 @@ def process_interview(self, interview_id: str) -> None:
         interview.status = Interview.Status.PROCESSING
         interview.save(update_fields=["status", "updated_at"])
 
-        transcript = transcribe_video(object_key=interview.video_object_key).transcript
-        feedback = analyze_transcript_for_feedback(transcript=transcript)
+        result = analyze_video_from_storage(
+            object_key=interview.video_object_key,
+            filename=interview.video_object_key.split("/")[-1],
+        )
+        transcript = result.transcript
+        feedback = {"summary": result.analysis, "strengths": [], "weaknesses": []}
 
         traits = getattr(getattr(interview.user, "personality_profile", None), "traits", {}) or {}
         job_payload = {
@@ -49,4 +53,3 @@ def process_interview(self, interview_id: str) -> None:
         interview.ai_feedback = {"error": str(exc)}
         interview.save(update_fields=["status", "ai_feedback", "updated_at"])
         raise
-

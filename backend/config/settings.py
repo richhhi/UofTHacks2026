@@ -122,11 +122,11 @@ S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME", "")
 S3_ACCESS_KEY_ID = os.getenv("S3_ACCESS_KEY_ID", "")
 S3_SECRET_ACCESS_KEY = os.getenv("S3_SECRET_ACCESS_KEY", "")
 
-TWELVELABS_API_KEY = os.getenv("TWELVELABS_API_KEY", "")
+TWELVELABS_API_KEY = os.getenv("TL_API_KEY", "")
+TWELVELABS_INDEX_ID = os.getenv("TL_INDEX_ID", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 # LLM provider toggle: "openai" (default stub) or "gemini"
 AI_PROVIDER = os.getenv("AI_PROVIDER", "openai").lower().strip()
-
