@@ -3,6 +3,7 @@ from __future__ import annotations
 import uuid
 
 from django.contrib.auth import authenticate, get_user_model
+from django.conf import settings
 from django.db import transaction
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -185,6 +186,8 @@ class InterviewViewSet(viewsets.ModelViewSet):
         file = request.FILES.get("file")
         if not file:
             return Response({"detail": "Missing multipart file field 'file'."}, status=status.HTTP_400_BAD_REQUEST)
+        if getattr(file, "size", 0) <= 0:
+            return Response({"detail": "Uploaded file is empty."}, status=status.HTTP_400_BAD_REQUEST)
 
         content_type = getattr(file, "content_type", "") or "application/octet-stream"
         ext = "webm" if "webm" in content_type else "mp4"
@@ -198,7 +201,16 @@ class InterviewViewSet(viewsets.ModelViewSet):
         interview.save(
             update_fields=["video_object_key", "video_mime_type", "video_size_bytes", "status", "updated_at"]
         )
-        process_interview.delay(str(interview.id))
+        if settings.CELERY_TASK_ALWAYS_EAGER:
+            try:
+                process_interview(str(interview.id))
+            except Exception as exc:  # noqa: BLE001 - surface inline processing errors
+                interview.status = Interview.Status.FAILED
+                interview.ai_feedback = {"error": str(exc)}
+                interview.save(update_fields=["status", "ai_feedback", "updated_at"])
+                return Response({"detail": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            process_interview.delay(str(interview.id))
 
         return Response({"uploaded": True, "object_key": saved_path, "queued": True, "interview_id": str(interview.id)})
 
@@ -212,6 +224,8 @@ class InterviewViewSet(viewsets.ModelViewSet):
         interview.status = Interview.Status.UPLOADED
         interview.save(update_fields=["video_size_bytes", "status", "updated_at"])
 
-        process_interview.delay(str(interview.id))
+        if settings.CELERY_TASK_ALWAYS_EAGER:
+            process_interview(str(interview.id))
+        else:
+            process_interview.delay(str(interview.id))
         return Response({"queued": True, "interview_id": str(interview.id)})
-

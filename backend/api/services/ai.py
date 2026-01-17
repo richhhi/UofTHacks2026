@@ -181,46 +181,6 @@ def generate_behavioral_questions(
     return GeneratedQuestions(questions=questions)
 
 
-def analyze_transcript_for_feedback(*, transcript: str) -> dict:
-    """
-    If AI_PROVIDER=gemini and GEMINI_API_KEY is set, uses Gemini; otherwise returns stub feedback.
-    """
-    try:
-        llm_out = _llm_generate_text(
-            prompt=(
-                "You are an interview coach. Given the transcript, produce JSON with keys: "
-                "summary (string), strengths (array of strings), weaknesses (array of strings). "
-                "Transcript:\n"
-                f"{transcript}\n"
-            )
-        )
-        if llm_out:
-            # For safety, we keep stub structure unless you explicitly want JSON parsing enabled.
-            return {"summary": llm_out[:8000], "strengths": [], "weaknesses": []}
-    except Exception:
-        pass
-
-    return {
-        "summary": "Stub feedback: replace with GPT STAR analysis.",
-        "strengths": [
-            "Clear structure (Situation/Task/Action/Result) in parts of the response",
-            "Concise communication",
-        ],
-        "weaknesses": [
-            "Add more quantifiable outcomes (metrics/impact)",
-            "Tighten the 'Task' portion to clarify ownership",
-        ],
-        "coaching": {
-            "star": {
-                "situation": "Where/when it happened (1–2 sentences).",
-                "task": "Your responsibility / objective.",
-                "action": "What you did (specific decisions).",
-                "result": "Outcome with numbers + reflection.",
-            }
-        },
-        "raw_transcript_length": len(transcript or ""),
-    }
-
 
 def score_job_fit(*, traits: dict, job: dict) -> dict:
     """
@@ -245,4 +205,3 @@ def score_job_fit(*, traits: dict, job: dict) -> dict:
         "traits_used": traits,
         "job_used": job,
     }
-
