@@ -1,3 +1,5 @@
+# test with python3 test.py /Users/zimohuang/UofTHacks2026/video1.mov
+
 from twelvelabs import TwelveLabs
 import argparse
 import mimetypes
