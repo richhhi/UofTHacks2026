@@ -172,7 +172,7 @@ export default function InterviewPage() {
     <div className="space-y-8">
       {" "}
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" onClick={() => router.back()}>
+        <Button variant="secondary" size="sm" onClick={() => router.back()}>
           ← Back
         </Button>
       </div>{" "}
