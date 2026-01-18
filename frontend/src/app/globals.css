@@ -55,10 +55,26 @@ body {
   /* Subtle paper grain + vignette (no image assets required) */
   .paper-bg {
     background:
-      radial-gradient(1200px 600px at 15% 0%, rgba(232, 197, 197, 0.35), transparent 60%),
-      radial-gradient(900px 600px at 90% 20%, rgba(168, 199, 217, 0.28), transparent 55%),
-      radial-gradient(1000px 800px at 60% 100%, rgba(184, 201, 184, 0.22), transparent 60%),
-      radial-gradient(900px 500px at 50% 40%, rgba(0, 0, 0, 0.035), transparent 65%),
+      radial-gradient(
+        1200px 600px at 15% 0%,
+        rgba(232, 197, 197, 0.35),
+        transparent 60%
+      ),
+      radial-gradient(
+        900px 600px at 90% 20%,
+        rgba(168, 199, 217, 0.28),
+        transparent 55%
+      ),
+      radial-gradient(
+        1000px 800px at 60% 100%,
+        rgba(184, 201, 184, 0.22),
+        transparent 60%
+      ),
+      radial-gradient(
+        900px 500px at 50% 40%,
+        rgba(0, 0, 0, 0.035),
+        transparent 65%
+      ),
       repeating-linear-gradient(
         0deg,
         rgba(0, 0, 0, 0.018) 0px,
@@ -67,10 +83,6 @@ body {
         transparent 6px
       ),
       linear-gradient(#f5f3ed, #f5f3ed);
-  }
-
-  .script-title {
-    @apply font-script tracking-tight text-ink;
   }
 
   .type-title {
@@ -82,4 +94,3 @@ body {
     image-rendering: crisp-edges;
   }
 }
-

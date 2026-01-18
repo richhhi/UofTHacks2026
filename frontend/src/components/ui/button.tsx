@@ -20,6 +20,7 @@ export function Button({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-cream",
         "disabled:pointer-events-none disabled:opacity-50",
         "active:scale-[0.98]",
+        "hover:animate-bounce",
         size === "default" && "h-11 px-6",
         size === "sm" && "h-10 px-4",
         size === "lg" && "h-12 px-7 text-base",

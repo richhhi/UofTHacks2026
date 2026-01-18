@@ -131,7 +131,7 @@ export default function NewInterviewPage() {
           </CardContent>
         </Card>
 
-        <div className="relative rounded-2xl border border-light-gray bg-butter-yellow/70 p-6 shadow-paper">
+        <div className="relative rounded-2xl border border-light-gray bg-butter-yellow/70 p-6 shadow-paper transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lift">
           <div
             className="pointer-events-none absolute right-6 top-5 h-4 w-20 rotate-3 rounded-sm bg-dusty-pink/60"
             aria-hidden="true"

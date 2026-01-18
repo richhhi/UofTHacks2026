@@ -56,6 +56,19 @@ const config: Config = {
         3: "3deg",
         "-3": "-3deg",
       },
+      animation: {
+        bounce: "bounce 0.6s ease-in-out",
+      },
+      keyframes: {
+        bounce: {
+          "0%, 100%": {
+            transform: "translateY(0)",
+          },
+          "50%": {
+            transform: "translateY(-8px)",
+          },
+        },
+      },
     },
   },
   plugins: [],
