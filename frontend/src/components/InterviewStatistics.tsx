@@ -51,22 +51,36 @@ export function InterviewStatistics() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-2xl border border-light-gray bg-butter-yellow/30 p-4 sm:p-6">
-        <p className="font-sans text-xs font-semibold uppercase text-warm-gray">Total Interviews</p>
-        <p className="mt-2 font-typewriter text-2xl font-bold text-ink">{stats.total_interviews}</p>
+        <p className="font-sans text-xs font-semibold uppercase text-warm-gray">
+          Total Interviews
+        </p>
+        <p className="mt-2 font-typewriter text-2xl font-bold text-ink">
+          {stats.total_interviews}
+        </p>
       </div>
 
       <div className="rounded-2xl border border-light-gray bg-soft-blue/30 p-4 sm:p-6">
-        <p className="font-sans text-xs font-semibold uppercase text-warm-gray">Avg Duration</p>
-        <p className="mt-2 font-typewriter text-2xl font-bold text-ink">{formatDuration(stats.average_duration_seconds)}</p>
+        <p className="font-sans text-xs font-semibold uppercase text-warm-gray">
+          Avg Duration
+        </p>
+        <p className="mt-2 font-typewriter text-2xl font-bold text-ink">
+          {formatDuration(stats.average_duration_seconds)}
+        </p>
       </div>
 
       <div className="rounded-2xl border border-light-gray bg-mint/30 p-4 sm:p-6">
-        <p className="font-sans text-xs font-semibold uppercase text-warm-gray">Total Questions</p>
-        <p className="mt-2 font-typewriter text-2xl font-bold text-ink">{stats.total_questions_answered}</p>
+        <p className="font-sans text-xs font-semibold uppercase text-warm-gray">
+          Total Questions
+        </p>
+        <p className="mt-2 font-typewriter text-2xl font-bold text-ink">
+          {stats.total_questions_answered}
+        </p>
       </div>
 
       <div className="rounded-2xl border border-light-gray bg-lavender/30 p-4 sm:p-6">
-        <p className="font-sans text-xs font-semibold uppercase text-warm-gray">Most Practiced</p>
+        <p className="font-sans text-xs font-semibold uppercase text-warm-gray">
+          Most Practiced
+        </p>
         <p className="mt-2 font-typewriter text-2xl font-bold text-ink">
           {stats.most_practiced_competency || "—"}
         </p>

@@ -30,9 +30,7 @@ export const TypingText: React.FC<TypingTextProps> = ({
   return (
     <span className={className}>
       {displayedText}
-      {currentIndex < text.length && (
-        <span className="animate-pulse">|</span>
-      )}
+      {currentIndex < text.length && <span className="animate-pulse">|</span>}
     </span>
   );
 };

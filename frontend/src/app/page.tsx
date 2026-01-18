@@ -25,7 +25,10 @@ export default function HomePage() {
             </div>
 
             <h1 className="font-typewriter text-3xl leading-tight sm:text-4xl">
-              <TypingText text="Practice interviews like you're writing in your favorite journal." speed={40} />
+              <TypingText
+                text="Practice interviews like you're writing in your favorite journal."
+                speed={40}
+              />
             </h1>
             <p className="max-w-xl font-typewriter text-base text-warm-gray sm:text-lg">
               Paste a job link, get tailored behavioral questions, record out
