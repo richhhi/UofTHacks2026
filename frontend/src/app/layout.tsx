@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <StickerLayer />
           <header className="sticky top-0 z-20 border-b border-light-gray/80 bg-cream/80 backdrop-blur">
             <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              <Link href="/" className="group inline-flex items-baseline gap-2">
+              <Link href="/" className="group inline-flex items-center gap-2">
                 <span className="font-typewriter text-3xl leading-none text-ink transition group-hover:-rotate-1">
                   Interview Journal
                 </span>
