@@ -59,6 +59,12 @@ export default function HomePage() {
                 aria-label="Review previous sessions"
               >
                 <div className="relative mx-auto -rotate-1 rounded-3xl border border-light-gray bg-butter-yellow/85 p-6 shadow-paper transition duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-lift sm:p-8">
+                  <img
+                    src="/characters/cat.png"
+                    alt=""
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-3 top-3 h-16 w-16 object-contain drop-shadow-sm sm:h-20 sm:w-20 md:h-24 md:w-24"
+                  />
                   <p className="font-typewriter text-xl font-bold text-ink sm:text-2xl">
                     Review previous sessions
                   </p>
@@ -80,6 +86,12 @@ export default function HomePage() {
               >
                 <div className="relative mx-auto rotate-[1deg] rounded-3xl border border-light-gray bg-soft-blue/28 p-6 shadow-paper transition duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-lift sm:p-8">
                   <div className="pointer-events-none absolute -right-2 -top-2 h-0 w-0 border-b-[22px] border-l-[22px] border-b-transparent border-l-white/70" />
+                  <img
+                    src="/characters/penguin.png"
+                    alt=""
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-3 top-3 h-16 w-16 object-contain drop-shadow-sm sm:h-20 sm:w-20 md:h-24 md:w-24"
+                  />
                   <p className="font-typewriter text-xl font-bold text-ink sm:text-2xl">
                     Identity profile
                   </p>
