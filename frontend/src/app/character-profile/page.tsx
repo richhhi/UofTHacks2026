@@ -60,7 +60,7 @@ export default function CharacterProfilePage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-2">
-          <h1 className="script-title text-4xl sm:text-5xl">
+          <h1 className="font-typewriter text-4xl sm:text-5xl">
             Character profile
           </h1>
           <p className="max-w-2xl font-typewriter text-sm text-warm-gray sm:text-base">
@@ -78,13 +78,13 @@ export default function CharacterProfilePage() {
       </div>
 
       {/* Main panel: same layout language as /sessions, but blue */}
-      <div className="relative overflow-hidden rounded-3xl border border-light-gray bg-soft-blue/18 p-6 shadow-paper sm:p-8">
+      <div className="relative overflow-hidden rounded-3xl border border-light-gray bg-soft-blue/18 p-6 shadow-paper transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lift sm:p-8">
         <div className="pointer-events-none absolute left-10 top-6 h-5 w-24 -rotate-2 rounded-sm bg-soft-blue/45" />
         <div className="pointer-events-none absolute right-10 top-10 h-5 w-28 rotate-2 rounded-sm bg-mint/35" />
 
         <div className="grid gap-6 lg:grid-cols-[0.9fr,1.1fr] lg:items-start">
           {/* Bunny "polaroid" */}
-          <div className="relative mx-auto w-full max-w-sm rotate-1 rounded-3xl border border-light-gray bg-white p-5 shadow-polaroid">
+          <div className="relative mx-auto w-full max-w-sm rotate-1 rounded-3xl border border-light-gray bg-white p-5 shadow-polaroid transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lift">
             <div className="pointer-events-none absolute left-8 top-4 h-4 w-24 -rotate-2 rounded-sm bg-soft-blue/35" />
             <p className="font-sans text-[11px] font-semibold text-warm-gray">
               The Professional (temp)
@@ -110,7 +110,7 @@ export default function CharacterProfilePage() {
 
           {/* Metrics */}
           <div className="space-y-5">
-            <div className="rounded-3xl border border-light-gray bg-off-white/65 p-6 shadow-paper">
+            <div className="rounded-3xl border border-light-gray bg-off-white/65 p-6 shadow-paper transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lift">
               <p className="font-typewriter text-lg font-bold text-ink">
                 Today’s focus
               </p>
@@ -134,7 +134,7 @@ export default function CharacterProfilePage() {
               </div>
             </div>
 
-            <Card className="-rotate-1">
+            <Card className="-rotate-1 transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lift">
               <CardHeader>
                 <CardTitle>Notes:</CardTitle>
                 <CardDescription>
