@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Allura, Courier_Prime, DM_Sans } from "next/font/google";
 
 import { StickerLayer } from "@/components/decorative/StickerLayer";
+import { HomeMascots } from "@/components/layout/HomeMascots";
 
 import "./globals.css";
 
@@ -37,13 +38,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <StickerLayer />
           <header className="sticky top-0 z-20 border-b border-light-gray/80 bg-cream/80 backdrop-blur">
             <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              <Link href="/" className="group inline-flex items-baseline gap-2">
-                <span className="font-script text-3xl leading-none text-ink transition group-hover:-rotate-1">
+              <Link href="/" className="group inline-flex items-center gap-2">
+                <span className="relative top-[1px] font-script text-3xl leading-none text-ink transition group-hover:-rotate-1">
                   Interview Journal
                 </span>
-                <span className="hidden font-typewriter text-xs text-warm-gray sm:inline">
-                  practice • record • reflect
-                </span>
+                <HomeMascots />
               </Link>
 
               <nav className="flex items-center gap-2">
@@ -61,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </header>
 
-          <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">{children}</main>
+          <main className="relative z-10 mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">{children}</main>
         </div>
       </body>
     </html>
