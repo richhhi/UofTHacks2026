@@ -44,72 +44,95 @@ export default function NewInterviewPage() {
   }
 
   return (
-    <main className="space-y-6">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Start a mock interview</h1>
-          <p className="text-sm text-slate-600">
-            Paste a job link and we’ll generate a short set of behavioral questions.
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="space-y-2">
+          <h1 className="type-title text-2xl sm:text-3xl">Start a new practice session</h1>
+          <p className="max-w-2xl font-typewriter text-sm text-warm-gray sm:text-base">
+            Add a job link if you have one. If not, just type a company + role and we’ll still create a
+            session.
           </p>
         </div>
         <Link href="/">
-          <Button variant="secondary">Home</Button>
+          <Button variant="secondary">Back to home</Button>
         </Link>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Job context</CardTitle>
-          <CardDescription>Optional, but improves question quality.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="jobUrl">Job link</Label>
-            <Input
-              id="jobUrl"
-              placeholder="https://... (Greenhouse, Lever, LinkedIn, etc.)"
-              value={jobUrl}
-              onChange={(e) => setJobUrl(e.target.value)}
-            />
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-[1fr,0.85fr] lg:items-start">
+        <Card className="relative">
+          <div
+            className="pointer-events-none absolute -top-3 left-10 h-6 w-36 -rotate-2 rounded-sm bg-soft-blue/60"
+            aria-hidden="true"
+          />
+          <CardHeader>
+            <CardTitle>Job context</CardTitle>
+            <CardDescription>Optional, but improves question quality.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="company">Company</Label>
+              <Label htmlFor="jobUrl">Job link</Label>
               <Input
-                id="company"
-                placeholder="e.g. Stripe"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
+                id="jobUrl"
+                placeholder="https://... (Greenhouse, Lever, LinkedIn, etc.)"
+                value={jobUrl}
+                onChange={(e) => setJobUrl(e.target.value)}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="title">Role</Label>
-              <Input
-                id="title"
-                placeholder="e.g. Software Engineer Intern"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="company">Company</Label>
+                <Input
+                  id="company"
+                  placeholder="e.g. Stripe"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="title">Role</Label>
+                <Input
+                  id="title"
+                  placeholder="e.g. Software Engineer Intern"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
 
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+            {error ? <p className="font-typewriter text-sm text-red-700">{error}</p> : null}
 
-          <Button onClick={onCreate} disabled={loading} className="w-full sm:w-auto">
-            {loading ? (
-              <>
-                <Spinner className="h-4 w-4" /> Creating…
-              </>
-            ) : (
-              "Generate questions"
-            )}
-          </Button>
-          <p className="text-xs text-slate-500">
-            Dev mode uses <span className="font-medium">/api/auth/dev-login</span> for a demo token.
-          </p>
-        </CardContent>
-      </Card>
-    </main>
+            <Button onClick={onCreate} disabled={loading} className="w-full sm:w-auto">
+              {loading ? (
+                <>
+                  <Spinner className="h-4 w-4" /> Creating…
+                </>
+              ) : (
+                "Generate questions"
+              )}
+            </Button>
+
+            <p className="font-typewriter text-xs text-warm-gray">
+              Dev mode uses <span className="font-bold text-ink">/api/auth/dev-login</span> for a demo
+              token.
+            </p>
+          </CardContent>
+        </Card>
+
+        <div className="relative rounded-2xl border border-light-gray bg-butter-yellow/70 p-6 shadow-paper">
+          <div
+            className="pointer-events-none absolute right-6 top-5 h-4 w-20 rotate-3 rounded-sm bg-dusty-pink/60"
+            aria-hidden="true"
+          />
+          <h2 className="font-typewriter text-lg font-bold text-ink">Tiny prep checklist</h2>
+          <ul className="mt-3 space-y-2 font-typewriter text-sm text-ink/80">
+            <li>• Speak out loud (it feels different than reading).</li>
+            <li>• Aim for one clear story: situation → task → action → result.</li>
+            <li>• Include one metric (even if it’s rough).</li>
+            <li>• End with reflection: what you’d do differently next time.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   );
 }
 

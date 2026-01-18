@@ -8,10 +8,78 @@ body {
 }
 
 body {
-  @apply bg-white text-slate-950 antialiased;
+  @apply bg-cream text-ink antialiased;
 }
 
 * {
   @apply border-border;
+}
+
+@layer base {
+  :root {
+    /* Colors */
+    --color-soft-blue: #a8c7d9;
+    --color-dusty-pink: #e8c5c5;
+    --color-sage-green: #b8c9b8;
+    --color-cream: #f5f3ed;
+    --color-warm-gray: #8b8b88;
+    --color-charcoal: #3d3d3d;
+    --color-light-gray: #e8e6e0;
+    --color-off-white: #fafaf8;
+    --color-warm-black: #2b2926;
+
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+
+    /* Shadows */
+    --shadow-sm: 2px 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 4px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 6px 10px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  body {
+    font-family: var(--font-typewriter), ui-monospace, Menlo, monospace;
+    line-height: 1.6;
+    color: var(--color-warm-black);
+    background: var(--color-cream);
+  }
+}
+
+@layer components {
+  /* Subtle paper grain + vignette (no image assets required) */
+  .paper-bg {
+    background:
+      radial-gradient(1200px 600px at 15% 0%, rgba(232, 197, 197, 0.35), transparent 60%),
+      radial-gradient(900px 600px at 90% 20%, rgba(168, 199, 217, 0.28), transparent 55%),
+      radial-gradient(1000px 800px at 60% 100%, rgba(184, 201, 184, 0.22), transparent 60%),
+      radial-gradient(900px 500px at 50% 40%, rgba(0, 0, 0, 0.035), transparent 65%),
+      repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.018) 0px,
+        rgba(0, 0, 0, 0.018) 1px,
+        transparent 1px,
+        transparent 6px
+      ),
+      linear-gradient(#f5f3ed, #f5f3ed);
+  }
+
+  .script-title {
+    @apply font-script tracking-tight text-ink;
+  }
+
+  .type-title {
+    @apply font-typewriter tracking-tight text-ink;
+  }
+
+  .image-rendering-pixelated {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
 }
 

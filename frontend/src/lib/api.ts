@@ -6,6 +6,17 @@ export type AuthState = {
 export type Interview = {
   id: string;
   status: string;
+  created_at?: string;
+  updated_at?: string;
+  job?: {
+    id: string;
+    url: string;
+    title: string;
+    company: string;
+    location?: string;
+    description?: string;
+    created_at?: string;
+  } | null;
   video_object_key: string;
   transcript_text: string;
   ai_feedback: any;
@@ -52,6 +63,10 @@ export async function createInterview(payload: { job_url?: string; title?: strin
 
 export async function getInterview(id: string) {
   return apiFetch<Interview>(`/api/interviews/${id}/`);
+}
+
+export async function listInterviews() {
+  return apiFetch<Interview[]>("/api/interviews/");
 }
 
 export async function presignUpload(interviewId: string, contentType: string) {

@@ -129,4 +129,5 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 # LLM provider toggle: "openai" (default stub) or "gemini"
-AI_PROVIDER = os.getenv("AI_PROVIDER", "openai").lower().strip()
+# If a Gemini key is present, default to Gemini unless explicitly overridden.
+AI_PROVIDER = os.getenv("AI_PROVIDER", ("gemini" if GEMINI_API_KEY else "openai")).lower().strip()

@@ -155,7 +155,11 @@ export function MediaRecorderPanel({
   }
 
   return (
-    <Card>
+    <Card className="relative rotate-1">
+      <div
+        className="pointer-events-none absolute -top-3 right-10 h-6 w-36 rotate-2 rounded-sm bg-lavender/60"
+        aria-hidden="true"
+      />
       <CardHeader>
         <CardTitle>Record your answers</CardTitle>
         <CardDescription>
@@ -164,7 +168,7 @@ export function MediaRecorderPanel({
       </CardHeader>
       <CardContent className="space-y-4">
         {!mediaStreamRef.current ? (
-          <Button onClick={initStream} disabled={initializing}>
+          <Button onClick={initStream} disabled={initializing} className="w-full sm:w-auto">
             {initializing ? (
               <>
                 <Spinner className="h-4 w-4" /> Enabling camera…
@@ -176,10 +180,16 @@ export function MediaRecorderPanel({
         ) : (
           <div className="flex flex-wrap gap-2">
             {!recording ? (
-              <Button onClick={start}>Start 60s recording</Button>
+              <Button
+                onClick={start}
+                className="h-12 rounded-full px-6 shadow-sm hover:shadow-paper"
+                title="Start recording"
+              >
+                ● Record 60s
+              </Button>
             ) : (
-              <Button onClick={stop} variant="destructive">
-                Stop ({formatMs(remainingMs)})
+              <Button onClick={stop} variant="destructive" className="h-12 rounded-full px-6">
+                ■ Stop ({formatMs(remainingMs)})
               </Button>
             )}
           </div>
@@ -190,24 +200,24 @@ export function MediaRecorderPanel({
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <p className="text-sm font-medium">Live</p>
+            <p className="font-sans text-xs font-semibold text-warm-gray">Live</p>
             <video
               ref={videoRef}
               playsInline
-              className="aspect-video w-full rounded-lg border bg-slate-50 object-cover"
+              className="aspect-video w-full rounded-2xl border border-light-gray bg-black/5 object-cover shadow-polaroid"
             />
           </div>
           <div className="space-y-2">
-            <p className="text-sm font-medium">Preview</p>
+            <p className="font-sans text-xs font-semibold text-warm-gray">Preview</p>
             {previewUrl ? (
               <video
                 src={previewUrl}
                 controls
                 playsInline
-                className="aspect-video w-full rounded-lg border bg-slate-50 object-cover"
+                className="aspect-video w-full rounded-2xl border border-light-gray bg-black/5 object-cover shadow-polaroid"
               />
             ) : (
-              <div className="flex aspect-video w-full items-center justify-center rounded-lg border bg-slate-50 text-sm text-slate-500">
+              <div className="flex aspect-video w-full items-center justify-center rounded-2xl border border-light-gray bg-off-white text-sm text-warm-gray shadow-sm">
                 No recording yet
               </div>
             )}

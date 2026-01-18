@@ -10,7 +10,10 @@ import time
 
 from django.conf import settings
 from django.core.files.storage import default_storage
-from twelvelabs import TwelveLabs
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:  # pragma: no cover
+    from twelvelabs import TwelveLabs
 
 
 DEFAULT_ANALYSIS_PROMPT = (
@@ -45,6 +48,14 @@ class TwelveLabsResult:
 def analyze_video_from_storage(
     *, object_key: str, filename: str | None = None, prompt: str | None = None
 ) -> TwelveLabsResult:
+    try:
+        from twelvelabs import TwelveLabs  # type: ignore
+    except ModuleNotFoundError as exc:
+        raise RuntimeError(
+            "TwelveLabs SDK is not installed. Install it (pip install twelvelabs) "
+            "or configure the app to use a different transcription/analysis backend."
+        ) from exc
+
     api_key = settings.TWELVELABS_API_KEY
     index_id = settings.TWELVELABS_INDEX_ID
     if not api_key:

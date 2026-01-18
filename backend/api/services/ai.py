@@ -140,9 +140,20 @@ def generate_behavioral_questions(
             payload = _extract_json_from_text(llm_out)
             if payload:
                 parsed = json.loads(payload)
+
+                # Gemini sometimes returns an object wrapper like {"questions": [...]}.
+                if isinstance(parsed, dict):
+                    for key in ("questions", "items", "data"):
+                        if isinstance(parsed.get(key), list):
+                            parsed = parsed[key]
+                            break
+
                 if isinstance(parsed, list):
                     cleaned: list[dict] = []
                     for item in parsed:
+                        # Allow either full objects or simple prompt strings.
+                        if isinstance(item, str):
+                            item = {"prompt": item}
                         if not isinstance(item, dict):
                             continue
                         prompt = str(item.get("prompt", "")).strip()

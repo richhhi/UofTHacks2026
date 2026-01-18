@@ -16,14 +16,20 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
-        size === "default" && "h-10 px-4 py-2",
-        size === "sm" && "h-9 px-3",
-        size === "lg" && "h-11 px-6 text-base",
-        variant === "default" && "bg-slate-950 text-white hover:bg-slate-800",
-        variant === "secondary" && "bg-slate-100 text-slate-950 hover:bg-slate-200",
-        variant === "ghost" && "hover:bg-slate-100",
-        variant === "destructive" && "bg-red-600 text-white hover:bg-red-700",
+        "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-md font-sans text-sm font-medium transition duration-300 ease-out",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-cream",
+        "disabled:pointer-events-none disabled:opacity-50",
+        "active:scale-[0.98]",
+        size === "default" && "h-11 px-6",
+        size === "sm" && "h-10 px-4",
+        size === "lg" && "h-12 px-7 text-base",
+        variant === "default" &&
+          "bg-soft-blue text-ink shadow-sm hover:-translate-y-0.5 hover:shadow-paper",
+        variant === "secondary" &&
+          "border-2 border-warm-gray bg-transparent text-warm-gray shadow-sm hover:-translate-y-0.5 hover:bg-off-white hover:text-ink",
+        variant === "ghost" && "bg-transparent text-soft-blue hover:underline underline-offset-4",
+        variant === "destructive" &&
+          "bg-dusty-pink text-ink shadow-sm hover:-translate-y-0.5 hover:shadow-paper",
         className
       )}
       {...props}

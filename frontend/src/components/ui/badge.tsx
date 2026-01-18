@@ -10,9 +10,10 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium",
-        variant === "default" && "bg-slate-950 text-white border-slate-950",
-        variant === "secondary" && "bg-slate-100 text-slate-900 border-slate-200",
+        "inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-sans text-xs font-medium",
+        "shadow-sm",
+        variant === "default" && "border-ink/10 bg-butter-yellow text-ink",
+        variant === "secondary" && "border-soft-blue/40 bg-soft-blue/30 text-ink",
         className
       )}
       {...props}

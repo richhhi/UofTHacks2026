@@ -146,90 +146,114 @@ export default function InterviewPage() {
   if (!interview) return null;
 
   return (
-    <main className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">Mock interview</h1>
-          <p className="text-sm text-slate-600">
-            Answer the questions out loud while recording. When you stop, upload to get feedback.
+        <div className="space-y-2">
+          <h1 className="type-title text-2xl sm:text-3xl">Mock interview session</h1>
+          <p className="max-w-2xl font-typewriter text-sm text-warm-gray sm:text-base">
+            Answer out loud while recording. When you stop, upload to generate feedback.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/interview/new">
-            <Button variant="secondary">New</Button>
+            <Button variant="secondary">New session</Button>
           </Link>
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Questions</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
+      <section className="grid gap-6 lg:grid-cols-[1.05fr,0.95fr] lg:items-start">
+        <div className="rounded-3xl border border-light-gray bg-off-white/70 p-6 shadow-paper">
+          <div className="flex items-baseline justify-between gap-3">
+            <h2 className="font-typewriter text-lg font-bold text-ink">Question stack</h2>
+            <span className="font-sans text-xs text-warm-gray">Pick 2–3 and go</span>
+          </div>
+
           {interview.questions?.length ? (
-            <ol className="space-y-3">
+            <ol className="mt-4 grid gap-4 sm:grid-cols-2">
               {interview.questions
                 .slice()
                 .sort((a, b) => a.order - b.order)
-                .slice(0, 2)
-                .map((q) => (
-                  <li key={q.id} className="rounded-lg border bg-slate-50 p-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm font-medium">Q{q.order + 1}</p>
-                      {q.competency ? <Badge variant="secondary">{q.competency}</Badge> : null}
-                    </div>
-                    <p className="mt-2 text-sm text-slate-700">{q.prompt}</p>
-                  </li>
-                ))}
+                .slice(0, 4)
+                .map((q, i) => {
+                  const tilt = i % 4 === 0 ? "-rotate-1" : i % 4 === 1 ? "rotate-1" : i % 4 === 2 ? "-rotate-2" : "rotate-2";
+                  const bg =
+                    i % 3 === 0 ? "bg-butter-yellow/80" : i % 3 === 1 ? "bg-mint/55" : "bg-lavender/55";
+                  return (
+                    <li
+                      key={q.id}
+                      className={[
+                        "relative rounded-2xl border border-light-gray p-4 shadow-paper transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lift",
+                        bg,
+                        tilt,
+                      ].join(" ")}
+                    >
+                      <div className="pointer-events-none absolute right-4 top-4 h-3 w-12 rotate-6 rounded-sm bg-white/40" />
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="font-sans text-xs font-semibold text-ink">Q{q.order + 1}</p>
+                        {q.competency ? <Badge variant="secondary">{q.competency}</Badge> : null}
+                      </div>
+                      <p className="mt-2 font-typewriter text-sm text-ink/90">{q.prompt}</p>
+                    </li>
+                  );
+                })}
             </ol>
           ) : (
-            <p className="text-sm text-slate-600">No questions yet.</p>
+            <p className="mt-4 font-typewriter text-sm text-warm-gray">No questions yet.</p>
           )}
-        </CardContent>
-      </Card>
+        </div>
 
-      <MediaRecorderPanel
-        onRecordingReady={setBlob}
-        onSubmit={onUploadAndSubmit}
-        submitDisabled={uploading || !blob}
-        submitting={uploading}
-        submitLabel="Submit"
-      />
+        <MediaRecorderPanel
+          onRecordingReady={setBlob}
+          onSubmit={onUploadAndSubmit}
+          submitDisabled={uploading || !blob}
+          submitting={uploading}
+          submitLabel="Submit"
+        />
+      </section>
 
       {interview.status === "complete" ? (
-        <Card>
+        <Card className="relative">
+          <div
+            className="pointer-events-none absolute -top-3 left-10 h-6 w-44 -rotate-2 rounded-sm bg-sage-green/55"
+            aria-hidden="true"
+          />
           <CardHeader>
-            <CardTitle>AI feedback</CardTitle>
+            <CardTitle>Feedback page</CardTitle>
+            <CardDescription>A gentle read-through, like notes from future-you.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-lg border bg-slate-50 p-3">
-              <p className="text-sm font-medium">Summary</p>
-              <p className="mt-1 text-sm text-slate-700">{interview.ai_feedback?.summary ?? "—"}</p>
+            <div className="rounded-2xl border border-light-gray bg-off-white p-4 shadow-sm">
+              <p className="font-sans text-xs font-semibold text-ink">Summary</p>
+              <p className="mt-2 font-typewriter text-sm text-ink/90">
+                {interview.ai_feedback?.summary ?? "—"}
+              </p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-lg border bg-slate-50 p-3">
-                <p className="text-sm font-medium">Strengths</p>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl border border-light-gray bg-mint/35 p-4 shadow-sm">
+                <p className="font-sans text-xs font-semibold text-ink">Strengths</p>
+                <ul className="mt-2 list-disc space-y-1 pl-5 font-typewriter text-sm text-ink/90">
                   {(interview.ai_feedback?.strengths ?? []).map((s: string, i: number) => (
                     <li key={i}>{s}</li>
                   ))}
                 </ul>
               </div>
-              <div className="rounded-lg border bg-slate-50 p-3">
-                <p className="text-sm font-medium">Weaknesses</p>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+              <div className="rounded-2xl border border-light-gray bg-dusty-pink/35 p-4 shadow-sm">
+                <p className="font-sans text-xs font-semibold text-ink">Next improvements</p>
+                <ul className="mt-2 list-disc space-y-1 pl-5 font-typewriter text-sm text-ink/90">
                   {(interview.ai_feedback?.weaknesses ?? []).map((s: string, i: number) => (
                     <li key={i}>{s}</li>
                   ))}
                 </ul>
               </div>
             </div>
-            <div className="rounded-lg border bg-slate-50 p-3">
-              <p className="text-sm font-medium">Transcript</p>
-              <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">
+            <details className="rounded-2xl border border-light-gray bg-off-white p-4 shadow-sm">
+              <summary className="cursor-pointer font-sans text-xs font-semibold text-ink">
+                Transcript
+              </summary>
+              <p className="mt-3 whitespace-pre-wrap font-typewriter text-sm text-ink/90">
                 {interview.transcript_text || "—"}
               </p>
-            </div>
+            </details>
           </CardContent>
         </Card>
       ) : null}
@@ -240,13 +264,13 @@ export default function InterviewPage() {
             <CardTitle>Processing failed</CardTitle>
             <CardDescription>Check backend logs and your S3/AI env vars.</CardDescription>
           </CardHeader>
-          <CardContent className="text-sm text-slate-700">
-            <pre className="whitespace-pre-wrap rounded-lg border bg-slate-50 p-3 text-xs">
+          <CardContent className="font-typewriter text-sm text-ink/90">
+            <pre className="whitespace-pre-wrap rounded-2xl border border-light-gray bg-off-white p-4 text-xs">
               {JSON.stringify(interview.ai_feedback, null, 2)}
             </pre>
           </CardContent>
         </Card>
       ) : null}
-    </main>
+    </div>
   );
 }
