@@ -28,13 +28,13 @@ export function Button({
           "bg-soft-blue text-ink shadow-sm hover:-translate-y-0.5 hover:shadow-paper",
         variant === "secondary" &&
           "border-2 border-warm-gray bg-transparent text-warm-gray shadow-sm hover:-translate-y-0.5 hover:bg-off-white hover:text-ink",
-        variant === "ghost" && "bg-transparent text-soft-blue hover:underline underline-offset-4",
+        variant === "ghost" &&
+          "bg-transparent text-soft-blue hover:underline underline-offset-4",
         variant === "destructive" &&
           "bg-dusty-pink text-ink shadow-sm hover:-translate-y-0.5 hover:shadow-paper",
-        className
+        className,
       )}
       {...props}
     />
   );
 }
-
