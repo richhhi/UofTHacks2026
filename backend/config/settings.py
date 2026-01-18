@@ -12,7 +12,7 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "1") == "1"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "api.itsnotyouitsthe.tech"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "api.itsnotyouitsthe.tech", "uofthacks2026-production-1374.up.railway.app"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
