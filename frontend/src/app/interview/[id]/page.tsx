@@ -165,7 +165,7 @@ export default function InterviewPage() {
         <div className="rounded-3xl border border-light-gray bg-off-white/70 p-6 shadow-paper">
           <div className="flex items-baseline justify-between gap-3">
             <h2 className="font-typewriter text-lg font-bold text-ink">Question stack</h2>
-            <span className="font-sans text-xs text-warm-gray">Pick 2–3 and go</span>
+            <span className="font-sans text-xs text-warm-gray">Pick 1-2 and go</span>
           </div>
 
           {interview.questions?.length ? (
